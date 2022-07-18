@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IUser } from './models/user.model';
+import { User } from './models/user.model';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CreateUserInput,
@@ -10,7 +10,7 @@ import {
 @Injectable()
 export class UsersService {
   // testing purpose
-  private users: IUser[] = [
+  private users: User[] = [
     {
       email: 'user1@gmail.com',
       password: '1',
@@ -18,8 +18,8 @@ export class UsersService {
     },
   ];
 
-  public createUser(input: CreateUserInput): IUser {
-    const user: IUser = {
+  public createUser(input: CreateUserInput): User {
+    const user: User = {
       userId: uuidv4(),
       ...input,
     };
@@ -29,7 +29,7 @@ export class UsersService {
     return user;
   }
 
-  public updateUser(input: UpdateUserInput): IUser {
+  public updateUser(input: UpdateUserInput): User {
     const user = this.users.find((u) => u.userId === input.userId);
 
     Object.assign(user, input);
@@ -37,19 +37,19 @@ export class UsersService {
     return user;
   }
 
-  public getUserById(userId: string): IUser {
+  public getUserById(userId: string): User {
     return this.users.find((u) => u.userId === userId);
   }
 
-  public getUsers(): IUser[] {
+  public getUsers(): User[] {
     return this.users;
   }
 
-  public getUserByEmail(email: string): IUser | undefined {
+  public getUserByEmail(email: string): User | undefined {
     return this.users.find((u) => u.email === email);
   }
 
-  public deleteUser(input: DeleteUserInput): IUser {
+  public deleteUser(input: DeleteUserInput): User {
     const willBeDeletedUserIndex = this.users.findIndex(
       (u) => u.userId === input.userId,
     );

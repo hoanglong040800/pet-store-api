@@ -1,0 +1,15 @@
+version: "3"
+services:
+  db:
+    image: "postgres:13"
+    container_name: "pet_store_db"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pet_store_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: "1"
+      POSTGRES_DB: 'pet_store'
+volumes:
+  pet_store_volume:

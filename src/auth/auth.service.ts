@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IUser, UsersService } from 'src/users';
+import { User, UsersService } from 'src/users';
 import { JWT_SCERET_TOKEN } from 'src/auth';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async validateCredentials(email: string, password: string): Promise<IUser> | null {
+  public async validateCredentials(email: string, password: string): Promise<User> | null {
     const user = this.usersService.getUserByEmail(email);
 
     if (!user) {
@@ -24,7 +24,7 @@ export class AuthService {
     return user;
   }
 
-  public async generateJwtToken(user: IUser): Promise<{ access_token: string }> {
+  public async generateJwtToken(user: User): Promise<{ access_token: string }> {
     const payload = {
       email: user.email,
       sub: user.userId,
@@ -37,7 +37,7 @@ export class AuthService {
     };
   }
 
-  public async verifyJwtToken(token: string): Promise<IUser> {
+  public async verifyJwtToken(token: string): Promise<User> {
     const decoded = this.jwtService.verify(token, {
       secret: JWT_SCERET_TOKEN,
     });

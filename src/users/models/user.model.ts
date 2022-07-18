@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 @ObjectType()
-export class IUser {
+export class User {
   @Field()
   @IsNotEmpty()
   userId: string;

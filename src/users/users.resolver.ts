@@ -3,7 +3,7 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { IContext } from 'src/auth';
 import { GqlAuthGuard } from 'src/auth/guards';
 import {
-  IUser,
+  User,
   UsersService,
   GetUserByIdArgs,
   CreateUserInput,
@@ -11,34 +11,34 @@ import {
   DeleteUserInput,
 } from 'src/users';
 
-@Resolver(() => IUser)
+@Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(() => IUser)
-  getUserById(@Args() input: GetUserByIdArgs): IUser {
+  @Query(() => User)
+  getUserById(@Args() input: GetUserByIdArgs): User {
     return this.usersService.getUserById(input.userId);
   }
 
-  @Query(() => [IUser])
+  @Query(() => [User])
   @UseGuards(GqlAuthGuard)
-  getUsers(@Context() context: IContext): IUser[] {
+  getUsers(@Context() context: IContext): User[] {
     console.log(context.req.user);
     return this.usersService.getUsers();
   }
 
-  @Mutation(() => IUser)
-  createUser(@Args('input') input: CreateUserInput): IUser {
+  @Mutation(() => User)
+  createUser(@Args('input') input: CreateUserInput): User {
     return this.usersService.createUser(input);
   }
 
-  @Mutation(() => IUser)
-  updateUser(@Args('input') input: UpdateUserInput): IUser {
+  @Mutation(() => User)
+  updateUser(@Args('input') input: UpdateUserInput): User {
     return this.usersService.updateUser(input);
   }
 
-  @Mutation(() => IUser)
-  deleteUser(input: DeleteUserInput): IUser {
+  @Mutation(() => User)
+  deleteUser(input: DeleteUserInput): User {
     return this.usersService.deleteUser(input);
   }
 }

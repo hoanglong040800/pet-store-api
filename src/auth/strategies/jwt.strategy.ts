@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { IUser, UsersService } from 'src/users';
+import { User, UsersService } from 'src/users';
 import { JWT_SCERET_TOKEN } from 'src/auth';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(validationPayload: { email: string; sub: string }): Promise<IUser | null> {
+  async validate(validationPayload: { email: string; sub: string }): Promise<User | null> {
     const user = await this.usersService.getUserByEmail(validationPayload.email);
     return user
   }
