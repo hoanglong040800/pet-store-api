@@ -12,10 +12,15 @@ export class IUser {
   email?: string;
 
   @Field({ nullable: true })
+  @IsOptional()
   @IsNotEmpty()
-  age: number;
+  age?: number;
 
   @Field({ nullable: true })
   @IsOptional()
   isSubscribed?: boolean;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  password?: string;
 }

@@ -1,8 +1,15 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GetUserByIdArgs } from './dto/args/users.args';
-import { CreateUserInput, DeleteUserInput, UpdateUserInput } from './dto/input/users.input';
-import { IUser } from './models/user.model';
-import { UsersService } from './users.service';
+import { UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { IContext } from 'src/auth';
+import { GqlAuthGuard } from 'src/auth/guards';
+import {
+  IUser,
+  UsersService,
+  GetUserByIdArgs,
+  CreateUserInput,
+  UpdateUserInput,
+  DeleteUserInput,
+} from 'src/users';
 
 @Resolver(() => IUser)
 export class UsersResolver {
@@ -10,16 +17,17 @@ export class UsersResolver {
 
   @Query(() => IUser)
   getUserById(@Args() input: GetUserByIdArgs): IUser {
-    return this.usersService.getUserById(input);
+    return this.usersService.getUserById(input.userId);
   }
 
-  @Query(()=>[IUser])
-  getUsers(): IUser[] {
+  @Query(() => [IUser])
+  @UseGuards(GqlAuthGuard)
+  getUsers(@Context() context: IContext): IUser[] {
+    console.log(context.req.user);
     return this.usersService.getUsers();
   }
 
   @Mutation(() => IUser)
-  // why args has property here?
   createUser(@Args('input') input: CreateUserInput): IUser {
     return this.usersService.createUser(input);
   }
@@ -30,7 +38,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => IUser)
-  deleteUser(input:DeleteUserInput):IUser{
-    return this.usersService.deleteUser(input)
+  deleteUser(input: DeleteUserInput): IUser {
+    return this.usersService.deleteUser(input);
   }
 }

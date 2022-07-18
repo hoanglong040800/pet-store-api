@@ -1,0 +1,1 @@
+export const JWT_SCERET_TOKEN = 'JWT_SCERET_TOKEN';
